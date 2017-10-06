@@ -5,6 +5,7 @@
 // @description  try to take over the world!
 // @author       You
 // @match        ts7.travian.com/*
+// @match        tx3.travian.com/*
 // @grant        none
 // @require      http://bobbzorzen.se/travian/utils.js
 // @require      http://bobbzorzen.se/travian/ui.js
@@ -45,7 +46,7 @@
                     var field = {
                         type: type,
                         level: level,
-                        href: elem.href
+                        buildId: elem.href.match(/\?.*id=([\d]+)/)[1]
                     };
                     fieldData.push(field);
                 }
@@ -132,15 +133,20 @@
             console.log("Current Page: " +this.currentPage);
             console.log("Current active builds: ", this.activeBuilds);
         };
-
+        this.getNextBuildPage = function () {
+            var enqueuedValues = JSON.parse(getCookie("queuedbuilds"));
+            if(enqueuedValues.length > 0) {
+                return enqueuedValues[0];
+            }
+            return this.resourceFields[0].buildId;
+        };
         this.handlePage = function () {
             if(this.currentPage == PAGES.resources) {
                 console.log("ON RESOURCES PAGE");
                 console.log("amount of active builds: ", this.activeBuilds.length);
-                console.log("Upcoming build: ", this.resourceFields[0].href);
-                if(this.activeBuilds.length == 0) {
-                //    this.gotoBuildPage(1);
-                    this.gotoBuildResourcePage(this.resourceFields[0].href);
+                console.log("Upcoming build: ", this.getNextBuildPage());
+                if(this.activeBuilds.length == 0) {                
+                    this.gotoBuildPage(this.getNextBuildPage());
                 }
             }
             else if (this.currentPage == PAGES.build){
@@ -149,24 +155,26 @@
                 console.log("Build is affortable: ", this.canAffordBuild());
                 var currentBuilding = getUrlParameter("id");
                 console.log("Build page: " + currentBuilding);
+                addQueueButton();
                 if(this.canAffordBuild()) {
+                    var enqueuedValues = JSON.parse(getCookie("queuedbuilds"));
+                    if(enqueuedValues.length) {
+                        if(enqueuedValues[0] == getUrlParameter("id")) {
+                            console.log("Unshift buiulding nr: ", enqueuedValues[0])
+                            enqueuedValues.shift()
+                            setCookie("queuedbuilds", JSON.stringify(enqueuedValues));
+                        }
+                    }
                     this.build();
                 } else {
                     this.gotoResourcePage();
-                    // var nextBuildPage = parseInt(currentBuilding)+1;
-                    // if(nextBuildPage > 18) {
-                    //     setTimeout(function () {
-                    //         this.gotoResourcePage();
-                    //     }, 60000);
-                    // }
-                    // else {
-                    //     this.gotoBuildPage(nextBuildPage);
-                    // }
+
                 }
             }
             else if (this.currentPage == PAGES.city) {
                 // this.gotoResourcePage();
                 console.log(this.getCityBuildingData());
+                this.gotoResourcePage();
             }
         };
     }
@@ -174,6 +182,9 @@
     setTimeout(function () {
         addAreYouThere();
         var bot = new TravianBot();
+        if(location.pathname.substring(1) == PAGES.build) {
+            addQueueButton();
+        }
         setInterval(function() {
             console.clear();
             if(!areYouThere()) {

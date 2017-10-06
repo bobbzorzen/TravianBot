@@ -18,3 +18,20 @@ var addAreYouThere = function () {
 var areYouThere = function () {
     return jQuery("#are-you-there")[0].checked;
 };
+
+var addQueueButton = function () {
+    var enQueuedValues = getCookie("queuedbuilds");
+    if(enQueuedValues == null){
+        setCookie("queuedbuilds", JSON.stringify([]));
+    }
+    var enQueueLink = jQuery("<a href='#' id='enqueue'> Queue build -> </a>");
+    jQuery("#build h4").append(enQueueLink);
+    enQueueLink.on("click", function (e){
+        var enqueuedValues = JSON.parse(getCookie("queuedbuilds"));
+        enqueuedValues.push(getUrlParameter("id"));
+        setCookie("queuedbuilds", JSON.stringify(enqueuedValues));
+        console.log("Enqueue: ", location.href);
+        console.log("COOKIE: ", enqueuedValues);
+        //setCookie("areyouthere", e.currentTarget.checked);
+    });
+};
