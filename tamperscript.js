@@ -136,7 +136,7 @@
         this.getNextBuildPage = function () {
             var enqueuedValues = JSON.parse(getCookie("queuedbuilds"));
             if(enqueuedValues.length > 0) {
-                return enqueuedValues[0];
+                return enqueuedValues[0].id;
             }
             return this.resourceFields[0].buildId;
         };
@@ -155,11 +155,10 @@
                 console.log("Build is affortable: ", this.canAffordBuild());
                 var currentBuilding = getUrlParameter("id");
                 console.log("Build page: " + currentBuilding);
-                addQueueButton();
                 if(this.canAffordBuild()) {
                     var enqueuedValues = JSON.parse(getCookie("queuedbuilds"));
                     if(enqueuedValues.length) {
-                        if(enqueuedValues[0] == getUrlParameter("id")) {
+                        if(enqueuedValues[0].id == getUrlParameter("id")) {
                             console.log("Unshift buiulding nr: ", enqueuedValues[0])
                             enqueuedValues.shift()
                             setCookie("queuedbuilds", JSON.stringify(enqueuedValues));
@@ -180,7 +179,10 @@
     }
     console.log("Sleeping a second before starting bot");
     setTimeout(function () {
+        addCustomUiElements();
         addAreYouThere();
+        addQueuedBuildings();
+
         var bot = new TravianBot();
         if(location.pathname.substring(1) == PAGES.build) {
             addQueueButton();
