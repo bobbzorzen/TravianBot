@@ -58,7 +58,7 @@ var addQueuedBuildings = function () {
     var enqueuedValues = JSON.parse(getCookie("queuedbuilds"));
     console.log("enqueuedValues: ", enqueuedValues);
     if(enqueuedValues.length > 0) {
-        var list = jQuery("<ol></ol>");
+        var list = jQuery("<ol style='padding-left:22px; margin: 0;'></ol>");
         for(var index = 0; index < enqueuedValues.length; index++) {
             var item = jQuery("<li>" + enqueuedValues[index].name + "(" + enqueuedValues[index].id + ")</li>");
             list.append(item);
