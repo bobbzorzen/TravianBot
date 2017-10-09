@@ -93,10 +93,10 @@
         };
         this.getBuildCost = function () {
             return {
-                wood: parseInt(jQuery("div.showCosts span.resources.r1").text().replace(/[^\d]/g, "")),
-                clay: parseInt(jQuery("div.showCosts span.resources.r2").text().replace(/[^\d]/g, "")),
-                stone: parseInt(jQuery("div.showCosts span.resources.r3").text().replace(/[^\d]/g, "")),
-                wheat: parseInt(jQuery("div.showCosts span.resources.r4").text().replace(/[^\d]/g, ""))
+                wood: parseInt(jQuery("div.showCosts span.resources.r1").first().text().replace(/[^\d]/g, "")),
+                clay: parseInt(jQuery("div.showCosts span.resources.r2").first().text().replace(/[^\d]/g, "")),
+                stone: parseInt(jQuery("div.showCosts span.resources.r3").first().text().replace(/[^\d]/g, "")),
+                wheat: parseInt(jQuery("div.showCosts span.resources.r4").first().text().replace(/[^\d]/g, ""))
             };
         };
         this.gotoBuildPage = function (id) {
