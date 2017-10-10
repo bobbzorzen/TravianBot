@@ -8,7 +8,7 @@ var addCustomUiElements = function () {
     var baseplate = jQuery("<div id='customuiplate'"+baseplateStyle+" ></div>");
     var baseplateHeader = jQuery("<h4>Bot Control</h4>");
     baseplate.append(baseplateHeader);
-    jQuery("body").append(baseplate);
+    jQuery("body").first().append(baseplate);
 };
 
 var addAreYouThere = function () {
@@ -54,18 +54,28 @@ var addQueuedBuildings = function () {
     var listWrapper = jQuery("<div></div>");
     var listHeader = jQuery("<h5 style='margin-top: 10px; margin-bottom:5px;'>Currently enqueued buildings</h5>");
     listWrapper.append(listHeader);
-
     var enqueuedValues = JSON.parse(getCookie("queuedbuilds"));
-    console.log("enqueuedValues: ", enqueuedValues);
+    if(enqueuedValues == null){
+        setCookie("queuedbuilds", JSON.stringify([]));
+    }
     if(enqueuedValues.length > 0) {
         var list = jQuery("<ol style='padding-left:22px; margin: 0;'></ol>");
         for(var index = 0; index < enqueuedValues.length; index++) {
-            var item = jQuery("<li>" + enqueuedValues[index].name + "(" + enqueuedValues[index].id + ")</li>");
+            var item = jQuery("<li>" + enqueuedValues[index].name + "(" + enqueuedValues[index].id + ") - <a href='#' data-index='" + index + "'>X</a></li>");
             list.append(item);
         }
         listWrapper.append(list);
     } else {
         listWrapper.append(jQuery("<span>No buildings enqueued!</span>"))
     }
+    listWrapper.find("li a").on("click", function (event) {
+        var element = jQuery(event.currentTarget);
+        var index = element.data("index");
+        console.log("Dequeueing: ", index);
+        var enqueuedValues = JSON.parse(getCookie("queuedbuilds"));
+        enqueuedValues.splice(index, 1);
+        setCookie("queuedbuilds", JSON.stringify(enqueuedValues));
+         element.parent().remove();
+    });
     jQuery("#customuiplate").append(listWrapper);
 };
