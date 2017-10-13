@@ -187,14 +187,16 @@
         if(location.pathname.substring(1) == PAGES.build) {
             addQueueButton();
         }
-        setInterval(function() {
-            console.clear();
-            if(!areYouThere()) {
-                bot.getState();
-                // bot.printCurrentState();
-                bot.handlePage();
-            } else {
-                console.log("Bot disabled, does nothing");
+        var interval = setInterval(function() {
+            if(jQuery("button[value='Login']").length == 0) {
+                console.clear();
+                if(!areYouThere()) {
+                    bot.getState();
+                    // bot.printCurrentState();
+                    bot.handlePage();
+                } else {
+                    console.log("Bot disabled, does nothing");
+                }
             }
         }, 5000);
     }, 1000);
