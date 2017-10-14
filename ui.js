@@ -8,7 +8,7 @@ var addCustomUiElements = function () {
     var baseplate = jQuery("<div id='customuiplate'"+baseplateStyle+" ></div>");
     var baseplateHeader = jQuery("<h4>Bot Control</h4>");
     baseplate.append(baseplateHeader);
-    jQuery("body").first().append(baseplate);
+    jQuery("#mainLayout>body").first().append(baseplate);
 };
 
 var addAreYouThere = function () {
@@ -25,7 +25,7 @@ var addAreYouThere = function () {
     });
 };
 var areYouThere = function () {
-    return jQuery("#are-you-there")[0].checked;
+    return jQuery("#customuiplate #are-you-there")[0].checked;
 };
 
 var addQueueButton = function () {
@@ -44,14 +44,13 @@ var addQueueButton = function () {
         };
         enqueuedValues.push(obj);
         setCookie("queuedbuilds", JSON.stringify(enqueuedValues));
-        console.log("Enqueue: ", obj);
-        console.log("COOKIE: ", enqueuedValues);
-        //setCookie("areyouthere", e.currentTarget.checked);
+        addQueuedBuildings();
     });
 };
 
 var addQueuedBuildings = function () {
-    var listWrapper = jQuery("<div></div>");
+    jQuery("#customuiplate #enqueued-buildings").remove();
+    var listWrapper = jQuery("<div id='enqueued-buildings'></div>");
     var listHeader = jQuery("<h5 style='margin-top: 10px; margin-bottom:5px;'>Currently enqueued buildings</h5>");
     listWrapper.append(listHeader);
     var enqueuedValues = JSON.parse(getCookie("queuedbuilds"));
@@ -75,7 +74,7 @@ var addQueuedBuildings = function () {
         var enqueuedValues = JSON.parse(getCookie("queuedbuilds"));
         enqueuedValues.splice(index, 1);
         setCookie("queuedbuilds", JSON.stringify(enqueuedValues));
-         element.parent().remove();
+        addQueuedBuildings();
     });
     jQuery("#customuiplate").append(listWrapper);
 };

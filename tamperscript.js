@@ -178,26 +178,32 @@
         };
     }
     console.log("Sleeping a second before starting bot");
-    setTimeout(function () {
-        addCustomUiElements();
-        addAreYouThere();
-        addQueuedBuildings();
+    if(location.pathname.substring(1) != PAGES.manual) {
+        setTimeout(function () {
+            addCustomUiElements();
+            addAreYouThere();
+            addQueuedBuildings();
 
-        var bot = new TravianBot();
-        if(location.pathname.substring(1) == PAGES.build) {
-            addQueueButton();
-        }
-        var interval = setInterval(function() {
-            if(jQuery("button[value='Login']").length == 0) {
-                console.clear();
-                if(!areYouThere()) {
-                    bot.getState();
-                    // bot.printCurrentState();
-                    bot.handlePage();
-                } else {
-                    console.log("Bot disabled, does nothing");
-                }
+            var bot = new TravianBot();
+            if(location.pathname.substring(1) == PAGES.build) {
+                addQueueButton();
             }
-        }, 5000);
-    }, 1000);
+            var interval = setInterval(function() {
+                try {
+                    if(jQuery("button[value='Login']").length == 0) {
+                        console.clear();
+                        if(!areYouThere()) {
+                            bot.getState();
+                            // bot.printCurrentState();
+                            bot.handlePage();
+                        } else {
+                            console.log("Bot disabled, does nothing");
+                        }
+                    }
+                }catch(e) {
+                    console.log("Error happened? ", e);
+                }
+            }, 5000);
+        }, 1000);
+    }
 })();
