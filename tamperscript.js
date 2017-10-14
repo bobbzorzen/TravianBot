@@ -178,6 +178,16 @@
         };
     }
     console.log("Sleeping a second before starting bot");
+    if(location.pathname.substring(1) == PAGES.map) {
+        var interval = setInterval(function() {
+            var tipInfo = jQuery(".tip .tip-contents").text();
+            var coordinatesX = jQuery(".tip .tip-contents .coordinateX").text()
+            var coordinatesY = jQuery(".tip .tip-contents .coordinateY").text()
+            if(tipInfo.indexOf("Abandoned valley") != -1) {
+                console.log("tipInfo: ", tipInfo);
+            }
+        }, 100);
+    }
     if(location.pathname.substring(1) != PAGES.manual) {
         setTimeout(function () {
             addCustomUiElements();
