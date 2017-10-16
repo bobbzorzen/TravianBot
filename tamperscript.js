@@ -209,6 +209,12 @@
                         } else {
                             console.log("Bot disabled, does nothing");
                         }
+                    } else {
+                        if(jQuery("#recaptcha_image").length == 0) {
+                            jQuery("button[value='Login']").first().click(); // Try to login
+                        } else {
+                            //TODO: Solve ReCaptchas...
+                        }
                     }
                 }catch(e) {
                     console.log("Error happened? ", e);
