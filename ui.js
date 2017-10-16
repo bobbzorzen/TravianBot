@@ -36,11 +36,12 @@ var addQueueButton = function () {
     var enQueueLink = jQuery("<a href='#' id='enqueue'> Queue build -> </a>");
     jQuery("#build .roundedCornersBox h4").append(enQueueLink);
     enQueueLink.on("click", function (e){
-        console.log("Clicked the thing");
+        console.log("Enqueued item");
         var enqueuedValues = JSON.parse(getCookie("queuedbuilds"));
         var obj = {
             name: jQuery("h1.titleInHeader").text(),
-            id: getUrlParameter("id")
+            id: getUrlParameter("id"),
+            village: jQuery("#sidebarBoxVillagelist ul li.active .name").text()
         };
         enqueuedValues.push(obj);
         setCookie("queuedbuilds", JSON.stringify(enqueuedValues));
@@ -61,9 +62,15 @@ var addQueuedBuildings = function () {
         var list = jQuery("<ol style='padding-left:22px; margin: 0;'></ol>");
         for(var index = 0; index < enqueuedValues.length; index++) {
             var item = jQuery("<li>" + enqueuedValues[index].name + "(" + enqueuedValues[index].id + ") - <a href='#' data-index='" + index + "'>X</a></li>");
-            list.append(item);
+            if(enqueuedValues[index].village == jQuery("#sidebarBoxVillagelist ul li.active .name").text()) {
+                list.append(item);
+            }
         }
-        listWrapper.append(list);
+        if(list.find("li").length == 0) {
+            listWrapper.append(jQuery("<span>No buildings enqueued!</span>"))
+        } else {
+            listWrapper.append(list);
+        }
     } else {
         listWrapper.append(jQuery("<span>No buildings enqueued!</span>"))
     }

@@ -136,17 +136,36 @@
         this.getNextBuildPage = function () {
             var enqueuedValues = JSON.parse(getCookie("queuedbuilds"));
             if(enqueuedValues.length > 0) {
-                return enqueuedValues[0].id;
+                for(var i = 0; i < enqueuedValues.length; i++) {
+                    if(enqueuedValues[i].village == this.getCurrentVillageName()){
+                        return enqueuedValues[i].id;
+                    }
+                }
             }
             return this.resourceFields[0].buildId;
         };
+        this.getCurrentVillageName = function () {
+            return jQuery("#sidebarBoxVillagelist ul li.active .name").text();
+        }
+        this.getNextVillagePage = function () {
+            var nextVillageLI = jQuery("#sidebarBoxVillagelist ul li.active + li")
+            if(nextVillageLI.length == 0) {
+                nextVillageLI = jQuery("#sidebarBoxVillagelist ul li:not(.active)").first()
+            }
+            var nextVillageHref = "https://" + window.location.hostname + "/" + PAGES.resources + nextVillageLI.find("a").attr("href");
+            //console.log("Next village: ", nextVillageHref);
+            return nextVillageHref;
+        }
         this.handlePage = function () {
             if(this.currentPage == PAGES.resources) {
                 console.log("ON RESOURCES PAGE");
                 console.log("amount of active builds: ", this.activeBuilds.length);
                 console.log("Upcoming build: ", this.getNextBuildPage());
                 if(this.activeBuilds.length == 0) {                
+                    //console.log("next page: ", this.getNextBuildPage());
                     this.gotoBuildPage(this.getNextBuildPage());
+                } else {
+                    window.location = this.getNextVillagePage();
                 }
             }
             else if (this.currentPage == PAGES.build){
@@ -166,8 +185,7 @@
                     }
                     this.build();
                 } else {
-                    this.gotoResourcePage();
-
+                    window.location = this.getNextVillagePage();
                 }
             }
             else if (this.currentPage == PAGES.city) {
