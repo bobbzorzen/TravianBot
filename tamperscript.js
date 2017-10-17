@@ -152,7 +152,10 @@
             if(nextVillageLI.length == 0) {
                 nextVillageLI = jQuery("#sidebarBoxVillagelist ul li:not(.active)").first()
             }
-            var nextVillageHref = "https://" + window.location.hostname + "/" + PAGES.resources + nextVillageLI.find("a").attr("href");
+            var nextVillageHref = "";
+            if(nextVillageLI.length > 0) {
+                nextVillageHref = "https://" + window.location.hostname + "/" + PAGES.resources + nextVillageLI.find("a").attr("href");
+            }
             //console.log("Next village: ", nextVillageHref);
             return nextVillageHref;
         }
@@ -185,7 +188,10 @@
                     }
                     this.build();
                 } else {
-                    window.location = this.getNextVillagePage();
+                    var nextVillagePage = this.getNextVillagePage();
+                    if(nextVillagePage != "") {
+                        window.location = nextVillagePage;
+                    }
                 }
             }
             else if (this.currentPage == PAGES.city) {
