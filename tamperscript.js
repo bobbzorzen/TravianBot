@@ -39,10 +39,10 @@
         this.getFieldData = function () {
             var fieldData = [];
             jQuery("map area").each(function(index, elem){
-                var elemData = elem.alt.match(/([A-z\s]+)\sLevel\s([\d])/);
+                var elemData = elem.alt.match(/([A-z\s]+)\sLevel\s([\d]+)/);
                 if(elemData) {
                     var type = elemData[1];
-                    var level = elemData[2];
+                    var level = parseInt(elemData[2]);
                     var field = {
                         type: type,
                         level: level,
@@ -56,6 +56,7 @@
                 if(a.level > b.level){return 1;}
                 return 0;
             });
+            console.log("Field data: ", fieldData);
             return fieldData;
         };
 
@@ -180,10 +181,15 @@
                 if(this.canAffordBuild()) {
                     var enqueuedValues = JSON.parse(getCookie("queuedbuilds"));
                     if(enqueuedValues.length) {
-                        if(enqueuedValues[0].id == getUrlParameter("id")) {
-                            console.log("Unshift buiulding nr: ", enqueuedValues[0])
-                            enqueuedValues.shift()
-                            setCookie("queuedbuilds", JSON.stringify(enqueuedValues));
+                        for(var i = 0; i < enqueuedValues.length; i++) {
+                            if(enqueuedValues[i].village == this.getCurrentVillageName()){
+                                if(enqueuedValues[i].id == getUrlParameter("id")) {
+                                    console.log("Unshift buiulding nr: ", enqueuedValues[i])
+                                    enqueuedValues.splice(i, 1);
+                                    setCookie("queuedbuilds", JSON.stringify(enqueuedValues));
+                                }
+                                break;
+                            }
                         }
                     }
                     this.build();
