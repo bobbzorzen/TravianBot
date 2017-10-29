@@ -112,6 +112,9 @@
         };
 
         this.canAffordBuild = function () {
+            if(jQuery(".upgradeButtonsContainer").length == 0) { // Building is completely upgraded
+                return false;
+            }
             var buildCost = this.getBuildCost();
             var enoughWood = this.wood >= buildCost.wood;
             var enoughClay = this.clay >= buildCost.clay;
@@ -223,7 +226,8 @@
             addCustomUiElements();
             addAreYouThere();
             addQueuedBuildings();
-
+            addQuickfillButtonsForVillages();
+            
             var bot = new TravianBot();
             if(location.pathname.substring(1) == PAGES.build) {
                 addQueueButton();

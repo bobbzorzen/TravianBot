@@ -85,3 +85,12 @@ var addQueuedBuildings = function () {
     });
     jQuery("#customuiplate").append(listWrapper);
 };
+
+
+var addQuickfillButtonsForVillages = function () {
+    jQuery("#sidebarBoxVillagelist .sidebarBoxInnerBox .innerBox.content ul li").append("<span class='autofill' style='cursor:pointer; position: absolute; right: -15px; top: 1px;'>X</span>");
+    jQuery("#sidebarBoxVillagelist .sidebarBoxInnerBox .innerBox.content ul li span.autofill").on("click", function (e) {
+        var villageName = jQuery(e.currentTarget).prev().find(".name").text();
+        jQuery("#enterVillageName").val(villageName)
+    });
+};
