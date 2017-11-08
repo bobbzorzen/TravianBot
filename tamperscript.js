@@ -22,6 +22,39 @@
         this.wheat = 0;
         this.currentPage = "dorf1.php";
         this.activeBuilds = [];
+        this.connectionEstablished = false;
+        window.WebSocket = window.WebSocket || window.MozWebSocket;
+        this.connection = new WebSocket('wss://bobbzorzen.se:1337');
+        self = this;
+        this.connection.onopen = function () {
+            console.log("CONNECTION ESTABLISHED - pre: ", self.connectionEstablished)
+            console.log("Socket connection established!");
+            self.connectionEstablished = true;
+            console.log("CONNECTION ESTABLISHED - post: ", self.connectionEstablished)
+        };
+        this.connection.onerror = function (error) {
+            console.log("Websocket error!");
+        };
+        this.connection.onmessage = function (message) {
+            try {
+                var json = JSON.parse(message.data);
+                console.log("MESSAGE, GOT!: ", json);
+            } catch (e) {
+                console.log('This doesn\'t look like a valid JSON: ',
+                            message.data);
+                return;
+            }
+        };
+
+        this.sendDataToServer = function (data) {
+            console.log("CONNECTION ESTABLISHED: ", this.connectionEstablished)
+            if(this.connectionEstablished) {
+                this.connection.send(data);
+                return true;
+            }
+            console.log("Connection to server not ok, message not sent")
+            return false;
+        }
 
         this.getActiveBuilds = function () {
             var builds = [];
@@ -163,11 +196,28 @@
             //console.log("Next village: ", nextVillageHref);
             return nextVillageHref;
         }
+        this.sendVillageData = function () {
+            
+            var isWoodFull = jQuery("#stockBarResource1 .barBox .stockFull").length;
+            var isClayFull = jQuery("#stockBarResource2 .barBox .stockFull").length;
+            var isIronFull = jQuery("#stockBarResource3 .barBox .stockFull").length;
+            var isWheatFull = jQuery("#stockBarResource4 .barBox .stockFull").length;
+
+            var resourceObject = {
+                "villageName": this.getCurrentVillageName(),
+                "wood": {"ammount": this.wood, "isFull": isWoodFull},
+                "clay": {"ammount": this.clay, "isFull": isClayFull},
+                "iron": {"ammount": this.iron, "isFull": isIronFull},
+                "wheat": {"ammount": this.wheat, "isFull": isWheatFull},
+            }
+            this.sendDataToServer(JSON.stringify(resourceObject));
+        }
         this.handlePage = function () {
             if(this.currentPage == PAGES.resources) {
                 console.log("ON RESOURCES PAGE");
                 console.log("amount of active builds: ", this.activeBuilds.length);
                 console.log("Upcoming build: ", this.getNextBuildPage());
+                this.sendVillageData();
                 if(this.activeBuilds.length == 0) {                
                     //console.log("next page: ", this.getNextBuildPage());
                     this.gotoBuildPage(this.getNextBuildPage());
@@ -239,6 +289,7 @@
                         if(!areYouThere()) {
                             bot.getState();
                             // bot.printCurrentState();
+            
                             bot.handlePage();
                         } else {
                             console.log("Bot disabled, does nothing");

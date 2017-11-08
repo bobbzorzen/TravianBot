@@ -18,6 +18,24 @@ wsServer = new WebSocketServer({
   httpServer: server
 });
 
+
+
+//Define base structure
+var villages ={};
+
+
+
+var render = function () {
+	/*
+	* Prints the status of all villages to the console
+	*/
+	console.log('\x1Bc');
+	for(village in villages) {
+		console.log(village + " - " + JSON.stringify(villages[village]));
+	}
+};
+
+
 // WebSocket server
 wsServer.on('request', function(request) {
   var connection = request.accept(null, request.origin);
@@ -27,7 +45,9 @@ wsServer.on('request', function(request) {
   connection.on('message', function(message) {
     if (message.type === 'utf8') {
       // process WebSocket message
-	console.log("GOT THE THING!: ", message);
+	village = JSON.parse(message.utf8Data);
+	villages[village.villageName] = village;
+	render();
     }
   });
 
