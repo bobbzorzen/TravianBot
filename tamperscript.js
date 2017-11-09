@@ -27,10 +27,8 @@
         this.connection = new WebSocket('wss://bobbzorzen.se:1337');
         self = this;
         this.connection.onopen = function () {
-            console.log("CONNECTION ESTABLISHED - pre: ", self.connectionEstablished)
             console.log("Socket connection established!");
             self.connectionEstablished = true;
-            console.log("CONNECTION ESTABLISHED - post: ", self.connectionEstablished)
         };
         this.connection.onerror = function (error) {
             console.log("Websocket error!");
@@ -308,3 +306,4 @@
         }, 1000);
     }
 })();
+
