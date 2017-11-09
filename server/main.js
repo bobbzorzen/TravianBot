@@ -30,12 +30,15 @@ var render = function () {
 	* Prints the status of all villages to the console
 	*/
 	console.log('\x1Bc');
+	var resetColor = "\x1b[0m"
+	var redColor = "\x1b[31m"
 	for(village in villages) {
+		var fontColor = "";
 		var resourceString = "";
-		resourceString += "wood: " + villages[village].wood.ammount + "\t";
-		resourceString += "clay: " + villages[village].clay.ammount + "\t";
-		resourceString += "iron: " + villages[village].iron.ammount + "\t";
-		resourceString += "wheat: "+ villages[village].wheat.ammount;
+		resourceString += "wood: " + (villages[village].wood.isFull ? redColor : "") + villages[village].wood.ammount + resetColor + "\t";
+		resourceString += "clay: " + (villages[village].clay.isFull ? redColor : "") + villages[village].clay.ammount + resetColor + "\t";
+		resourceString += "iron: " + (villages[village].iron.isFull ? redColor : "") + villages[village].iron.ammount + resetColor + "\t";
+		resourceString += "wheat: "+ (villages[village].wheat.isFull ? redColor : "") + villages[village].wheat.ammount + resetColor;
 		console.log(village + "(" + villages[village].updated.toLocaleTimeString() + ")" + " - " + resourceString);
 		//console.log(villages[village]);
 	}
