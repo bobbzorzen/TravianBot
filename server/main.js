@@ -30,9 +30,9 @@ var render = function () {
 	* Prints the status of all villages to the console
 	*/
 	console.log('\x1Bc');
-	var resetColor = "\x1b[0m"
-	var redColor = "\x1b[31m"
-	keys = Object.keys(villages).sort()
+	var resetColor = "\x1b[0m";
+	var redColor = "\x1b[31m";
+	keys = Object.keys(villages).sort();
 	for(key in keys) {
 		village = keys[key];
 		var fontColor = "";
