@@ -32,7 +32,9 @@ var render = function () {
 	console.log('\x1Bc');
 	var resetColor = "\x1b[0m"
 	var redColor = "\x1b[31m"
-	for(village in villages) {
+	keys = Object.keys(villages).sort()
+	for(key in keys) {
+		village = keys[key];
 		var fontColor = "";
 		var resourceString = "";
 		resourceString += "wood: " + (villages[village].wood.isFull ? redColor : "") + villages[village].wood.ammount + resetColor + "\t";
