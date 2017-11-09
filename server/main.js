@@ -31,7 +31,13 @@ var render = function () {
 	*/
 	console.log('\x1Bc');
 	for(village in villages) {
-		console.log(village + " - " + JSON.stringify(villages[village]));
+		var resourceString = "";
+		resourceString += "wood: " + villages[village].wood.ammount + "\t";
+		resourceString += "clay: " + villages[village].clay.ammount + "\t";
+		resourceString += "iron: " + villages[village].iron.ammount + "\t";
+		resourceString += "wheat: "+ villages[village].wheat.ammount;
+		console.log(village + "(" + villages[village].updated.toLocaleTimeString() + ")" + " - " + resourceString);
+		//console.log(villages[village]);
 	}
 };
 
@@ -46,7 +52,9 @@ wsServer.on('request', function(request) {
     if (message.type === 'utf8') {
       // process WebSocket message
 	village = JSON.parse(message.utf8Data);
+	village.updated = new Date();
 	villages[village.villageName] = village;
+	//console.log("Village: " + message.utf8Data);
 	render();
     }
   });
