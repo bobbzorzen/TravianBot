@@ -6,16 +6,19 @@
 // @author       You
 // @match        ts7.travian.com/*
 // @match        tx3.travian.com/*
+// @match        ts3.travian.com/*
 // @grant        none
 // @require      http://bobbzorzen.se/travian/utils.js
 // @require      http://bobbzorzen.se/travian/ui.js
 // @require      http://bobbzorzen.se/travian/constants.js
+// @require      http://bobbzorzen.se/travian/resources.js
 // ==/UserScript==
 
 
 (function() {
     'use strict';
     function TravianBot() {
+        this.resources = new Resources();
         this.wood = 0;
         this.clay = 0;
         this.stone = 0;
