@@ -55,12 +55,17 @@ wsServer.on('request', function(request) {
   // all messages from users here.
   connection.on('message', function(message) {
     if (message.type === 'utf8') {
-      // process WebSocket message
-	village = JSON.parse(message.utf8Data);
-	village.updated = new Date();
-	villages[village.villageName] = village;
-	//console.log("Village: " + message.utf8Data);
-	render();
+        // process WebSocket message
+        if(message.utf8Data == "extension"){
+            //Send data to connection
+            connection.sendUTF(JSON.stringify(villages))
+        } else {
+    	    village = JSON.parse(message.utf8Data);
+	        village.updated = new Date();
+	        villages[village.villageName] = village;
+    	    //console.log("Village: " + message.utf8Data);
+	        render();
+        }
     }
   });
 
