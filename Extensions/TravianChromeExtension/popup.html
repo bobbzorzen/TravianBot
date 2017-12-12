@@ -2,11 +2,18 @@
 <html>
     <head>
         <title>Travian bot title</title>
+        <script src="jquery-3.2.1.min.js"></script>
         <script src="popup.js"></script>
+        <style>
+            .red{
+                color: red;
+            }
+        </style>
     </head>
     <body style="width: 500px;">
         <h1>Travian stuff</h1>
-        <table border=1 style="width: 100%">
+        <button id="checkPage">test</button>
+        <table border=1 style="width: 100%" id="villagesTable">
             <tr>
                 <th>Village</th>
                 <th>Wood</th>
@@ -14,14 +21,6 @@
                 <th>Iron</th>
                 <th>Wheat</th>
                 <th>Incoming attacks</th>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
             </tr>
         </table>
     </body>
