@@ -5,6 +5,18 @@ document.addEventListener('DOMContentLoaded', function() {
     var connectionEstablished = false;
     var connection = new WebSocket('wss://bobbzorzen.se:1337');
     var villages = {}
+
+    var notify = function () {
+        var opt = {
+            type: "basic",
+            title: "Primary Title",
+            message: "Primary message to display",
+            iconUrl: "icon.png"
+        }
+
+        chrome.notifications.create(opt);
+    };
+
     var render = function () {
         $("table").remove();
         table = $("<table>");
@@ -22,6 +34,8 @@ document.addEventListener('DOMContentLoaded', function() {
             table.append(tr)
         }
         $("body").append(table)
+
+        setTimeout(notify, 5000);
     };
     connection.onopen = function () {
         console.log("Socket connection established!");
