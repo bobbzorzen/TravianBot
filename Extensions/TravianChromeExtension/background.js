@@ -8,16 +8,16 @@ function getFullStorages(villages) {
     for(villageName in villages) {
         var village = villages[villageName];
         if(village.wood.isFull) {
-            fullStorage.append({"title": villageName, "message": "Wood: " + village.wood})
+            fullStorages.push({"title": villageName, "message": "Wood: " + village.wood.ammount})
         }
         else if(village.clay.isFull) {
-            fullStorage.append({"title": villageName, "message": "Clay: " + village.clay})
+            fullStorages.push({"title": villageName, "message": "Clay: " + village.clay.ammount})
         }
         else if(village.iron.isFull) {
-            fullStorage.append({"title": villageName, "message": "Iron: " + village.iron})
+            fullStorages.push({"title": villageName, "message": "Iron: " + village.iron.ammount})
         }
         else if(village.wheat.isFull) {
-            fullStorage.append({"title": villageName, "message": "Wheat: " + village.wheat})
+            fullStorages.push({"title": villageName, "message": "Wheat: " + village.wheat.ammount})
         }
     }
     return fullStorages
